@@ -1,0 +1,243 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--vscode-font-family);
+    color: var(--vscode-foreground);
+    background: var(--vscode-editor-background);
+}
+* { box-sizing: border-box; }
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ---------- 툴바 ---------- */
+#toolbar {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    flex: none;
+}
+#toolbar .spacer { flex: 1; }
+#toolbar .sep {
+    width: 1px;
+    height: 16px;
+    background: var(--vscode-panel-border);
+    margin: 0 4px;
+}
+#stats {
+    margin-left: 10px;
+    font-size: 12px;
+    color: var(--vscode-descriptionForeground);
+}
+
+button {
+    background: var(--vscode-button-secondaryBackground, #3a3d41);
+    color: var(--vscode-button-secondaryForeground, #fff);
+    border: 1px solid var(--vscode-contrastBorder, transparent);
+    border-radius: 3px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+}
+button:hover { background: var(--vscode-button-secondaryHoverBackground, #45494e); }
+button:disabled { opacity: 0.4; cursor: default; }
+
+/* ---------- 파일 헤더 ---------- */
+#headers {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+    border-bottom: 1px solid var(--vscode-panel-border);
+    flex: none;
+    background: var(--vscode-editorGroupHeader-tabsBackground, transparent);
+}
+.phead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    min-width: 0;
+}
+.pname {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+}
+.ppath {
+    flex: 1;
+    font-size: 11px;
+    color: var(--vscode-descriptionForeground);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: rtl; /* 긴 경로는 뒷부분(파일명 쪽)이 보이게 */
+    text-align: left;
+}
+.hbtns { display: flex; gap: 4px; flex: none; }
+.hbtns button { padding: 1px 7px; font-size: 11px; }
+.dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    flex: none;
+}
+.dot.on { background: var(--vscode-charts-orange, orange); }
+
+/* ---------- diff 본문 ---------- */
+#main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+#diff {
+    flex: 1;
+    overflow: auto;
+    outline: none;
+    font-family: var(--vscode-editor-font-family, monospace);
+    font-size: var(--vscode-editor-font-size, 13px);
+    line-height: 1.45;
+}
+
+/* ---------- 오버뷰 룰러 (WinMerge 위치 창) ---------- */
+#ruler {
+    width: 17px;
+    flex: none;
+    position: relative;
+    border-left: 1px solid var(--vscode-panel-border);
+    background: var(--vscode-editorGroupHeader-tabsBackground, transparent);
+    cursor: pointer;
+    user-select: none;
+}
+#rulerCanvas { display: block; }
+#rulerView {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border: 1px solid var(--vscode-focusBorder, #007fd4);
+    background: rgba(127, 127, 127, 0.18);
+    border-radius: 2px;
+    pointer-events: none;
+}
+.row {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) 44px 46px minmax(0, 1fr);
+}
+.ln {
+    text-align: right;
+    padding: 0 7px;
+    color: var(--vscode-editorLineNumber-foreground, #858585);
+    user-select: none;
+    font-size: 11px;
+    line-height: inherit;
+}
+.code {
+    white-space: pre-wrap;
+    word-break: break-all;
+    padding: 0 6px;
+    border-left: 1px solid var(--vscode-panel-border);
+    min-height: 1.45em;
+}
+.gut {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    border-left: 1px solid var(--vscode-panel-border);
+    background: var(--vscode-editorGroupHeader-tabsBackground, transparent);
+}
+.cpy {
+    font-size: 9px;
+    padding: 0 4px;
+    line-height: 16px;
+    border-radius: 2px;
+}
+
+/* 변경 유형별 색상 */
+.t-del .side-l { background: rgba(229, 83, 83, 0.18); }
+.t-ins .side-r { background: rgba(83, 196, 119, 0.18); }
+.t-mod .side-l,
+.t-mod .side-r { background: rgba(222, 184, 73, 0.14); }
+.chg {
+    background: rgba(222, 184, 73, 0.5);
+    border-radius: 2px;
+}
+.code.empty {
+    background: repeating-linear-gradient(45deg,
+        transparent, transparent 6px,
+        rgba(128, 128, 128, 0.13) 6px, rgba(128, 128, 128, 0.13) 7px);
+}
+.row.sel .side-l,
+.row.sel .side-r { outline: 1px solid var(--vscode-focusBorder, #007fd4); outline-offset: -1px; }
+
+.nodiff {
+    padding: 30px;
+    text-align: center;
+    color: var(--vscode-descriptionForeground);
+}
+
+/* ---------- 첫 화면 ---------- */
+#welcome {
+    position: absolute;
+    inset: 70px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    pointer-events: none;
+}
+#welcome .w-btns,
+#welcome button { pointer-events: auto; }
+.w-icon { font-size: 48px; opacity: 0.5; }
+.w-title { font-size: 20px; font-weight: 700; opacity: 0.8; }
+.w-text {
+    text-align: center;
+    font-size: 13px;
+    color: var(--vscode-descriptionForeground);
+    line-height: 1.7;
+}
+.w-btns { display: flex; gap: 8px; }
+
+/* ---------- 드롭 오버레이 ---------- */
+#dropOverlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 100;
+}
+#dropOverlay.show { display: flex; }
+.dz {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--vscode-foreground);
+    background: rgba(0, 127, 212, 0.10);
+    border: 2px dashed var(--vscode-focusBorder, #007fd4);
+    margin: 8px;
+    border-radius: 8px;
+    transition: background 0.1s;
+}
+.dz.hover { background: rgba(0, 127, 212, 0.28); }
+.dz span { pointer-events: none; }
+.dz-hint {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--vscode-descriptionForeground);
+    pointer-events: none;
+}

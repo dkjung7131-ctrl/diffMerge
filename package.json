@@ -1,0 +1,96 @@
+{
+  "name": "diffmerge",
+  "displayName": "DiffMerge",
+  "description": "WinMerge 스타일 파일 비교/병합 — 드래그앤드롭, 한쪽만 열어도 비교 가능, 블록 단위 복사",
+  "version": "0.1.5",
+  "publisher": "dkjung",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dkjung7131-ctrl/diffMerge.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "diffmerge",
+          "title": "DiffMerge",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "diffmerge": [
+        {
+          "id": "diffmerge.launcher",
+          "name": "비교"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "diffmerge.open",
+        "title": "DiffMerge: 비교 창 열기"
+      },
+      {
+        "command": "diffmerge.compareSelected",
+        "title": "DiffMerge로 비교"
+      },
+      {
+        "command": "diffmerge.refresh",
+        "title": "DiffMerge: 새로고침(비교)"
+      },
+      {
+        "command": "diffmerge.pick",
+        "title": "DiffMerge: 파일 선택"
+      },
+      {
+        "command": "diffmerge.checkUpdate",
+        "title": "DiffMerge: 업데이트 확인"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "diffmerge.pick",
+          "when": "false"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "diffmerge.compareSelected",
+          "group": "3_compare@9"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "diffmerge.compareSelected",
+          "group": "3_compare@9"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "diffmerge.refresh",
+        "key": "f5",
+        "when": "activeWebviewPanelId == 'diffMerge'"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.4.5"
+  }
+}

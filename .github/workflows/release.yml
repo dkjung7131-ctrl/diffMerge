@@ -1,0 +1,26 @@
+# v* 태그 푸시 시 vsix 빌드 후 GitHub Release 에 첨부
+# (확장의 자동 업데이트가 releases/latest 의 vsix 를 내려받음)
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx @vscode/vsce package
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
+          generate_release_notes: true
