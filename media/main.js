@@ -295,6 +295,41 @@
         compare();
     }
 
+    // ---------------- 텍스트 직접 입력 (붙여넣기 비교) ----------------
+
+    // 파일이 연결된 쪽을 고치면 수정(저장 가능)으로, 빈 쪽이면 새 텍스트로 적재
+    function setText(side, text) {
+        const s = state[side];
+        if (s.lines && s.path) {
+            s.lines = splitLines(text);
+            s.edited = true;
+        } else {
+            s.path = null;
+            s.name = '(붙여넣은 텍스트)';
+            s.eol = '\n';
+            s.lines = splitLines(text);
+            s.edited = false;
+        }
+        cur = -1;
+    }
+
+    function openEditor() {
+        $('edL').value = state.left.lines ? state.left.lines.join('\n') : '';
+        $('edR').value = state.right.lines ? state.right.lines.join('\n') : '';
+        $('editor').classList.add('show');
+        $('edL').focus();
+    }
+
+    function applyEditor() {
+        const tL = $('edL').value, tR = $('edR').value;
+        const oldL = state.left.lines ? state.left.lines.join('\n') : '';
+        const oldR = state.right.lines ? state.right.lines.join('\n') : '';
+        if (tL !== oldL) { setText('left', tL); }
+        if (tR !== oldR) { setText('right', tR); }
+        $('editor').classList.remove('show');
+        compare();
+    }
+
     // F5 / 비교 버튼 — 경로 있는 쪽은 디스크에서 다시 읽음 (수정 중이면 보존)
     function refresh() {
         let asked = false;
@@ -511,7 +546,29 @@
     $('btnClearL').addEventListener('click', () => clearSide('left'));
     $('btnClearR').addEventListener('click', () => clearSide('right'));
 
+    $('btnEdit').addEventListener('click', openEditor);
+    $('btnEdApply').addEventListener('click', applyEditor);
+    $('btnEdCancel').addEventListener('click', () => $('editor').classList.remove('show'));
+
+    // 전역 붙여넣기 — 비어있는 쪽부터 채움, 둘 다 차 있으면 편집 화면을 띄움
+    window.addEventListener('paste', (e) => {
+        if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT')) { return; }
+        if ($('editor').classList.contains('show')) { return; }
+        const text = e.clipboardData && e.clipboardData.getData('text/plain');
+        if (!text) { return; }
+        e.preventDefault();
+        if (!state.left.lines) { setText('left', text); compare(); }
+        else if (!state.right.lines) { setText('right', text); compare(); }
+        else { openEditor(); }
+    });
+
     window.addEventListener('keydown', (e) => {
+        const editorOpen = $('editor').classList.contains('show');
+        if (editorOpen) {
+            if (e.key === 'Escape') { e.preventDefault(); $('editor').classList.remove('show'); }
+            else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); applyEditor(); }
+            return;
+        }
         if (e.key === 'F5') { e.preventDefault(); refresh(); }
         else if (e.key === 'F8') { e.preventDefault(); nav(e.shiftKey ? -1 : 1); }
     });

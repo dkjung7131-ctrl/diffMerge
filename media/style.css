@@ -207,6 +207,52 @@ button:disabled { opacity: 0.4; cursor: default; }
 }
 .w-btns { display: flex; gap: 8px; }
 
+/* ---------- 텍스트 직접 입력 ---------- */
+#editor {
+    position: absolute;
+    inset: 70px 0 0 0;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: var(--vscode-editor-background);
+    z-index: 50;
+}
+#editor.show { display: flex; }
+#edCols {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    min-height: 0;
+}
+.ed-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+.ed-head { font-size: 12px; font-weight: 600; }
+.ed-col textarea {
+    flex: 1;
+    resize: none;
+    padding: 6px 8px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--vscode-input-border, var(--vscode-panel-border));
+    border-radius: 3px;
+    font-family: var(--vscode-editor-font-family, monospace);
+    font-size: var(--vscode-editor-font-size, 13px);
+    outline: none;
+    white-space: pre;
+}
+.ed-col textarea:focus { border-color: var(--vscode-focusBorder, #007fd4); }
+#editorBtns {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
 /* ---------- 드롭 오버레이 ---------- */
 #dropOverlay {
     position: fixed;

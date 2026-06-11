@@ -248,6 +248,7 @@ function getHtml(webview: vscode.Webview): string {
   <div id="toolbar">
     <button id="btnCompare" title="다시 비교 (F5)">⟳ 비교</button>
     <button id="btnSwap" title="좌우 바꾸기">⇄ 바꾸기</button>
+    <button id="btnEdit" title="파일 없이 텍스트를 직접 붙여넣어 비교">✎ 텍스트</button>
     <span class="sep"></span>
     <button id="btnPrev" title="이전 변경">▲ 이전</button>
     <button id="btnNext" title="다음 변경">▼ 다음</button>
@@ -282,10 +283,27 @@ function getHtml(webview: vscode.Webview): string {
     <div class="w-text">
       Finder · 바탕화면에서는 파일을 이쪽으로 그냥 드래그하세요.<br>
       <b>VSCode 탐색기에서는</b> 사이드바(⇆)의 <b>왼쪽/오른쪽 슬롯</b>에 끌어다 놓거나, 우클릭 → <b>"DiffMerge로 비교"</b>.<br>
-      이 패널에 직접 놓으려면 <b>드래그를 시작한 뒤, 놓기 직전에 Shift</b> 를 누르세요 (미리 누르면 안 됨).<br><br>
+      이 패널에 직접 놓으려면 <b>드래그를 시작한 뒤, 놓기 직전에 Shift</b> 를 누르세요 (미리 누르면 안 됨).<br>
+      파일 없이도 됩니다 — 그냥 <b>붙여넣기(⌘V)</b> 하거나 툴바의 <b>✎ 텍스트</b> 버튼을 누르세요.<br><br>
       <b>한 개만 열어도 됩니다</b> — 반대쪽은 빈 상태로 비교됩니다.
     </div>
     <div class="w-btns"><button id="btnWOpenL">왼쪽 파일 열기…</button><button id="btnWOpenR">오른쪽 파일 열기…</button></div>
+  </div>
+  <div id="editor">
+    <div id="edCols">
+      <div class="ed-col">
+        <div class="ed-head">왼쪽</div>
+        <textarea id="edL" placeholder="여기에 텍스트 붙여넣기 (⌘V)" spellcheck="false"></textarea>
+      </div>
+      <div class="ed-col">
+        <div class="ed-head">오른쪽</div>
+        <textarea id="edR" placeholder="여기에 텍스트 붙여넣기 (⌘V)" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <div id="editorBtns">
+      <button id="btnEdApply">비교 (⌘Enter)</button>
+      <button id="btnEdCancel">취소 (Esc)</button>
+    </div>
   </div>
   <div id="dropOverlay">
     <div class="dz" id="dropL"><span>⬇ 왼쪽에 놓기</span></div>

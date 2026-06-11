@@ -2,7 +2,7 @@
   "name": "diffmerge",
   "displayName": "DiffMerge",
   "description": "WinMerge 스타일 파일 비교/병합 — 드래그앤드롭, 한쪽만 열어도 비교 가능, 블록 단위 복사",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publisher": "dkjung",
   "license": "MIT",
   "repository": {
